@@ -54,7 +54,7 @@ class GerenciarTarefas:
 
         self.tarefas[nome] = nova_tarefa
         self._salvar_tarefa()
-        print(f'Tarefa "{nome}" adicionada com sucesso.')
+        # print(f'Tarefa "{nome}" adicionada com sucesso.')
 
     def exibir_tarefas(self):
         """Exibe todas as tarefas salvas."""
@@ -86,41 +86,60 @@ class GerenciarTarefas:
         print("Todas as tarefas foram removidas.")
 
 if __name__ == "__main__":
-    gerenciador = GerenciarTarefas()
-    gerenciador._carregar_json()
+    def executar():
+        gerenciador = GerenciarTarefas()
+        gerenciador._carregar_json()
 
-    while True:
-        print("\n=== Menu do Gerenciador de Tarefas ===")
-        print("1. Adicionar Tarefa")
-        print("2. Remover Tarefa")
-        print("3. Exibir Tarefas")
-        print("4. Limpar Todas as Tarefas")
-        print("5. Sair")
-        opcao = input("Escolha uma opção: ")
+        while True:
+            print("\n=== Menu do Gerenciador de Tarefas ===")
+            print("1. Adicionar Tarefa")
+            print("2. Remover Tarefa")
+            print("3. Exibir Tarefas")
+            print("4. Limpar Todas as Tarefas")
+            print("5. Sair")
+            opcao = input("Escolha uma opção: ")
 
-        if opcao == "1":
-            nome = input("Nome da Tarefa: ")
-            data = input("Data (dd/mm/aaaa): ")
-            hora = input("Hora (hh:mm): ")  # Hora da tarefa
-            descricao = input("Descrição: ")
-            prioridade = input("Prioridade (Alta, Média, Baixa): ")
+            if opcao == "1":
+                nome = input("Nome da Tarefa: ")
+                data = input("Data (dd/mm/aaaa): ")
+                hora = input("Hora (hh:mm): ")  # Hora da tarefa
+                descricao = input("Descrição: ")
+                prioridade = input("Prioridade (Alta, Média, Baixa): ")
+                gerenciador.adicionar_tarefa(nome, data, hora, descricao, prioridade)
+
+            elif opcao == "2":
+                nome = input("Digite o nome da tarefa a remover: ")
+                gerenciador.remover_tarefa(nome)
+
+            elif opcao == "3":
+                gerenciador.exibir_tarefas()
+
+            elif opcao == "4":
+                confirmar = input("Tem certeza que deseja limpar todas as tarefas? (s/n): ")
+                if confirmar.lower() == "s":
+                    gerenciador.limpar_tarefas()
+
+            elif opcao == "5":
+                print("Encerrando o programa. Até logo!")
+                break
+
+            else:
+                print("Opção inválida. Tente novamente.")
+    
+    def gerar_arquivos_teste():
+        from random import choice
+        n = 100
+        gerenciador = GerenciarTarefas()
+        gerenciador._carregar_json()
+        for x in range(n):
+            nome = str(x+1) + ' - ' + str(choice(range(n))) + str(choice(range(n))) + str(choice(range(n))) + str(choice(range(n)))
+            data = str(x+1) * 10
+            hora = str(x+1) * 10
+            descricao = str(x+1) * 2000
+            prioridade = str(+1)
             gerenciador.adicionar_tarefa(nome, data, hora, descricao, prioridade)
-
-        elif opcao == "2":
-            nome = input("Digite o nome da tarefa a remover: ")
-            gerenciador.remover_tarefa(nome)
-
-        elif opcao == "3":
-            gerenciador.exibir_tarefas()
-
-        elif opcao == "4":
-            confirmar = input("Tem certeza que deseja limpar todas as tarefas? (s/n): ")
-            if confirmar.lower() == "s":
-                gerenciador.limpar_tarefas()
-
-        elif opcao == "5":
-            print("Encerrando o programa. Até logo!")
-            break
-
-        else:
-            print("Opção inválida. Tente novamente.")
+            gerenciador._salvar_tarefa()
+        return gerenciador
+    
+    executar()
+    
